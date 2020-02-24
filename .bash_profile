@@ -1,12 +1,8 @@
-# .bash_profile
+export GOPATH=~/go
+export GO111MODULE=on
+export PATH="$GOPATH/bin:$PATH"
 
-# Get the aliases and functions
 if [ -f ~/.bashrc ]; then
 	. ~/.bashrc
 fi
 
-# User specific environment and startup programs
-
-PATH=$PATH:$HOME/.local/bin:$HOME/bin:
-
-export PATH
