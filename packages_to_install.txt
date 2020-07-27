@@ -1,0 +1,9 @@
+ack
+bat-musl
+curl
+mawk
+neovim
+rsync
+tmux
+--
+rust
