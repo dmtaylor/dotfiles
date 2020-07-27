@@ -50,11 +50,11 @@ function is_macos {
 set -o vi
 
 # set editor
-export EDITOR=/usr/bin/vim
+export EDITOR=/usr/bin/nvim
 
 # set prompt color
 #export PS1="\e[0;32m$PS1\e[m"
-export PS1="\[\e[0;32m\][\u@\h \W]\$ \[\e[m\]"
+export PS1="\[\e[0;32m\][\u@dev1:\l \W]\$ \[\e[m\]"
 # enhance globbing behavior
 #shopt -s nullglob
 #shopt -s extglob
@@ -135,7 +135,7 @@ shopt -s histverify # verify !$ and !! before running
  alias du='du -h'
 
 # make view use vim rather than vi
-alias view='vim -Rp'
+alias view='nvim -Rp'
 
 # use coreutils version over macos
 if is_macos ; then
@@ -174,6 +174,7 @@ fi
  alias lla='ls -lA'
 # alias l='ls -CF'                              #
  alias vim='vim -p'
+ alias nvim='nvim -p'
  alias cp='cp -i -p'
  alias jobs='jobs -l'
  alias ed='ed -p'

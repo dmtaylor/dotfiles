@@ -7,6 +7,7 @@ set nocompatible
 let usePlugins = 1
 if usePlugins == 1
     filetype off " disable for running plugins
+    filetype indent plugin off
 
     " Vundle section
     set rtp+=~/.vim/bundle/Vundle.vim
@@ -23,14 +24,16 @@ if usePlugins == 1
     Plugin 'tpope/vim-unimpaired'
     Plugin 'vim-scripts/cream-showinvisibles'
     Plugin 'mileszs/ack.vim'
-    Plugin 'sjl/gundo.vim'
     Plugin 'scrooloose/nerdcommenter'
+    Plugin 'simnalamburt/vim-mundo'
     Plugin 'fatih/vim-go'
     Plugin 'stanangeloff/php.vim'
     Plugin 'junegunn/gv.vim'
     Plugin 'agude/vim-eldar'
     Plugin 'itspriddle/vim-shellcheck'
     Plugin 'junegunn/fzf'
+    Plugin 'rust-lang/rust.vim'
+    Plugin 'airblade/vim-gitgutter'
 
     call vundle#end()
     "end vundle section
@@ -38,7 +41,7 @@ if usePlugins == 1
     cnoreabbrev Ack Ack!
     nnoremap <leader>a :Ack!<Space>
     " gundo
-    nnoremap <leader>u :GundoToggle<CR>
+    nnoremap <leader>u :MundoToggle<CR>
 
     " add function & Leader-F to fix Ack printing issue: mileszs/ack#18
     function Search(string) abort
@@ -55,6 +58,15 @@ if usePlugins == 1
 
     " taboo tab naming section
     let g:taboo_tab_format=" %N %f%m "
+    let g:taboo_renamed_tab_format =" %N[%l]%m "
+
+    " expanded go syntax highlighting
+    let g:go_highlight_functions = 1
+    let g:go_highlight_function_parameters = 1
+    let g:go_highlight_function_calls = 1
+    let g:go_highlight_types = 1
+    let g:go_highlight_fields = 1
+    let g:go_highlight_extra_types = 1
 
 endif
 
