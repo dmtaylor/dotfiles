@@ -39,6 +39,15 @@ function is_macos {
     fi
 }
 
+function brname {
+    a=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
+    if [ -n "$a" ]; then
+        echo " [$a]"
+    else
+        echo ""
+    fi
+}
+
 # Shell Options
 #
 # See man bash for more options...
@@ -50,11 +59,11 @@ function is_macos {
 set -o vi
 
 # set editor
-export EDITOR=/usr/bin/nvim
+export EDITOR=vim
 
 # set prompt color
 #export PS1="\e[0;32m$PS1\e[m"
-export PS1="\[\e[0;32m\][\u@dev1:\l \W]\$ \[\e[m\]"
+export PS1="\[\e[0;32m\][\u@\h \W]\$ \[\e[m\]"
 # enhance globbing behavior
 #shopt -s nullglob
 #shopt -s extglob
@@ -112,6 +121,15 @@ shopt -s histverify # verify !$ and !! before running
 # Whenever displaying the prompt, write the previous line to disk
 # export PROMPT_COMMAND="history -a"
 
+# configure python setup
+export PATH="$HOME/.pyenv/bin:$PATH"
+if command -v pyenv 1>/dev/null 2>&1 ; then
+    eval "$(pyenv init -)"
+    eval "$(pyenv virtualenv-init -)"
+elif which python3 1>/dev/null 2>&1 ; then
+    alias python="$(which python3)"
+fi
+
 # Aliases
 #
 # Some people use a different file for aliases
@@ -135,7 +153,11 @@ shopt -s histverify # verify !$ and !! before running
  alias du='du -h'
 
 # make view use vim rather than vi
-alias view='nvim -Rp'
+alias view='vim -Rp'
+
+# use homebrew python 3 by default
+#alias python='/usr/local/bin/python3'
+#alias pip='/usr/local/bin/pip3'
 
 # use coreutils version over macos
 if is_macos ; then
@@ -143,6 +165,7 @@ if is_macos ; then
     which ggrep >/dev/null && alias grep='ggrep --color'
     which gegrep >/dev/null && alias egrep='gegrep --color=auto '              # show differences in colour
     which gfgrep >/dev/null && alias fgrep='gfgrep --color=auto '              # show differences in colour
+    which gtr >/dev/null && alias tr='gtr'
     which gfind >/dev/null && alias find='gfind'
     which gxargs >/dev/null && alias xargs='gxargs'
     which glocate >/dev/null && alias locate='glocate'
@@ -155,18 +178,24 @@ if is_macos ; then
     which gecho >/dev/null && alias echo='gecho'
     which gdate >/dev/null && alias date='gdate'
     which gtar >/dev/null && alias tar='gtar'
+    which gdf >/dev/null && alias df='gdf'
+    which ghead >/dev/null && alias head='ghead'
+    which gtail >/dev/null && alias tail='gtail'
+    which gls >/dev/null && alias ls='gls -h --color=always'
+
+    which rmtrash >/dev/null && alias del='rmtrash' # use del to move to trash
 else
     alias grep='grep --color '                     # show differences in colour
     alias egrep='egrep --color=auto '              # show differences in colour
     alias fgrep='fgrep --color=auto '              # show differences in colour
+    alias ls='ls -h --color=auto'                 # classify files in colour
 fi
 
 #
 # Misc :)
-# alias less='less -r'                          # raw control characters
+ alias less='less -R'                          # raw control characters
 # alias whence='type -a'                        # where, of a sort
 # Some shortcuts for different directory listings
- alias ls='ls -h --color=auto'                 # classify files in colour
 # alias dir='ls --color=auto --format=vertical'
 # alias vdir='ls --color=auto --format=long'
  alias ll='ls -l'                              # long list
@@ -174,25 +203,27 @@ fi
  alias lla='ls -lA'
 # alias l='ls -CF'                              #
  alias vim='vim -p'
- alias nvim='nvim -p'
  alias cp='cp -i -p'
  alias jobs='jobs -l'
  alias ed='ed -p'
  alias info='info --vi-keys'
 
-alias sudo='sudo -E'
-
 # common typos
 alias sl='ls'
 
 # show the weather
-alias weather='curl wttr.in/pao'
+alias weather='curl wttr.in/sunnyvale'
 
 # print user defined env variables (begining with [a-z]
 alias envp='compgen -A variable | grep "^[a-z]" | sort'
 
 # git aliases
 alias gsl="git log --pretty=short --abbrev"
+
+alias clearmatrix="cmatrix -s ; clear"
+
+# redis
+alias redis="redis-server /usr/local/etc/redis.conf"
 
 # Umask
 #
@@ -286,3 +317,12 @@ if test $SSH_AUTH_SOCK && [ $SSH_AUTH_SOCK != $SOCK ] ; then
     ln -sf $SSH_AUTH_SOCK $SOCK
     export SSH_AUTH_SOCK=$SOCK
 fi
+
+export BASH_CONF="rc"
+
+# setup nvm config
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+#source ~/perl5/perlbrew/etc/bashrc
+source "$HOME/.cargo/env"
